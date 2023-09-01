@@ -3,17 +3,19 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 # Importing modules
 
-def main():
+def main(FILEHEADER):
     fullMatrix = []
 
-    with open("Python\DrDave\CSI\ZMatrix.txt",'r') as f: #Put file location of Matrix file in relation to current file location
+    with open(FILEHEADER + "ZMatrix.txt",'r') as f: #Put file location of Matrix file in relation to current file location
         for row in f: #Loops through each row in the file
             layerVals = row[:-1].strip().split('\t') #This is for data seperated by tabs, if it is comma seperated, change '\t' to ', '
             fullMatrix.append(layerVals) #adds each processed row to a full matrix
 
-    #Creates a grid for the data to be plotted on. This is in pixels, not in microns, but can be changed as need be
+    #Creates a grid for the data to be plotted on. in microns
     x = np.arange(0, 10*len(fullMatrix), 10)
+    x = np.multiply(x, 8.87437e-6)
     y = np.arange(0, 10*len(fullMatrix[0]), 10)
+    y  = np.multiply(y, 8.87437e-6)
     x, y = np.meshgrid(y, x)
 
     #sets irrelevant values to 'nan' 
@@ -31,7 +33,3 @@ def main():
     ax.plot_surface(x, y, condensedArray, cmap = "coolwarm")
 
     plt.show()
-
-if __name__ == "__main__":
-    print("hello")
-    main()
